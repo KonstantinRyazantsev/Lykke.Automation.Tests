@@ -4,4 +4,4 @@ WORKDIR /app
 EXPOSE 80
 COPY . .
 # COPY /runtimes/debian-x64/native/libuv.so /app
-ENTRYPOINT ["dotnet", "AFT-Assets.dll"]
+ENTRYPOINT ["dotnet", "AFT-Assets.dll","&&","while [ 1 ]; do printf .; sleep 5; done"]
