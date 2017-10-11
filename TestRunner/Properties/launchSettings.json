@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TestRunner": {
+      "commandName": "Project",
+      "commandLineArgs": "LogFile_201710110238.xml Smoke"
+    }
+  }
+}
