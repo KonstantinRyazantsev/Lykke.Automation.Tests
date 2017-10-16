@@ -1,0 +1,1 @@
+while [ 1 ]; do printf .; sleep infinity; done
