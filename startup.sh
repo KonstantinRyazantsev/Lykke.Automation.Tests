@@ -6,7 +6,6 @@ H="'Content-type: application/json'"
 b=$(dotnet vstest AFT-Assets.dll)
 
 echo "{\"attachments\": [{\"text\":\"" > tmp.txt
-b=$(echo $b | tr '\n' ' ')
 b=$(echo $b | tr '\\' "/")
 b=$(echo $b | tr "'" "“")
 
