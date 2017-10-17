@@ -1,4 +1,4 @@
-FROM microsoft/aspnetcore:2.0
+FROM microsoft/aspnetcore-build:2.0
 
 EXPOSE 22
 ADD startup.sh /root/
