@@ -112,7 +112,7 @@ namespace AFTests.ApiV2
             }
         }
 
-        [Ignore("Fails for some reason. Probably cache.")]
+        //[Ignore("Fails for some reason. Probably cache.")]
         [Test]
         [Category("Smoke")]
         [Category("Wallets")]
@@ -154,7 +154,7 @@ namespace AFTests.ApiV2
             }
         }
 
-        [Ignore("Fails with 404 for some reason. Probably cache.")]
+        //[Ignore("Fails with 404 for some reason. Probably cache.")]
         [Test]
         [Category("Smoke")]
         [Category("Wallets")]
@@ -173,7 +173,7 @@ namespace AFTests.ApiV2
             Assert.True(parsedResponse.Balance == accountBalance.Balance);
         }
 
-        [Ignore("Fails for some reason. Probably cache.")]
+        //[Ignore("Fails for some reason. Probably cache.")]
         [Test]
         [Category("Smoke")]
         [Category("Wallets")]
@@ -186,7 +186,7 @@ namespace AFTests.ApiV2
             Assert.True(response.Status == HttpStatusCode.OK);
             List<WBalanceDTO> parsedResponse = JsonUtils.DeserializeJson<List<WBalanceDTO>>(response.ResponseJson);
 
-            AccountEntity entity = await this.AccountRepository.TryGetAsync(this.TestWallet.Id) as AccountEntity;
+            AccountEntity entity = await this.AccountRepository.TryGetAsync(this.TestTradingWallet.Id) as AccountEntity;
             Assert.NotNull(entity);
 
             foreach (BalanceDTO entityBalance in entity.BalancesParsed)
@@ -197,7 +197,7 @@ namespace AFTests.ApiV2
             }
         }
 
-        [Ignore("Fails for some reason. Probably cache.")]
+        //[Ignore("Fails for some reason. Probably cache.")]
         [Test]
         [Category("Smoke")]
         [Category("Wallets")]
@@ -210,7 +210,7 @@ namespace AFTests.ApiV2
             Assert.True(response.Status == HttpStatusCode.OK);
             WBalanceDTO parsedResponse = JsonUtils.DeserializeJson<WBalanceDTO>(response.ResponseJson);
 
-            AccountEntity entity = await this.AccountRepository.TryGetAsync(this.TestClientId) as AccountEntity;
+            AccountEntity entity = await this.AccountRepository.TryGetAsync(this.TestTradingWallet.Id) as AccountEntity;
             Assert.NotNull(entity);
             BalanceDTO entityBalance = entity.BalancesParsed.Where(b => b.Asset == this.TestAssetId).FirstOrDefault();
             Assert.NotNull(entityBalance);
@@ -257,12 +257,14 @@ namespace AFTests.ApiV2
         [Category("WalletsDelete")]
         public async Task DeleteWallet()
         {
-            string url = ApiPaths.WALLETS_BASE_PATH + "/" + this.TestWalletDelete.Id;
+            WalletDTO TestWalletDelete = await CreateTestWallet();
+
+            string url = ApiPaths.WALLETS_BASE_PATH + "/" + TestWalletDelete.Id;
             var response = await this.Consumer.ExecuteRequest(url, Helpers.EmptyDictionary, null, Method.DELETE);
 
             Assert.True(response.Status == HttpStatusCode.OK);
 
-            WalletEntity entity = await this.WalletRepository.TryGetAsync(this.TestWalletDelete.Id) as WalletEntity;
+            WalletEntity entity = await this.WalletRepository.TryGetAsync(TestWalletDelete.Id) as WalletEntity;
             Assert.True(entity.State == "deleted");
         }
 
@@ -272,14 +274,16 @@ namespace AFTests.ApiV2
         [Category("WalletsHFTPut")]
         public async Task RegenerateApiKey()
         {
-            string url = ApiPaths.HFT_BASE_PATH + "/" + this.TestWalletRegenerateKey.Id + "/regenerateKey";
+            WalletDTO TestWalletRegenerateKey = await CreateTestWallet(true);
+
+            string url = ApiPaths.HFT_BASE_PATH + "/" + TestWalletRegenerateKey.Id + "/regenerateKey";
             var response = await this.Consumer.ExecuteRequest(url, Helpers.EmptyDictionary, null, Method.PUT);
             Assert.True(response.Status == HttpStatusCode.OK);
 
             WalletCreateHFTDTO parsedResponse = JsonUtils.DeserializeJson<WalletCreateHFTDTO>(response.ResponseJson);
-            Assert.True(this.TestWalletRegenerateKey.ApiKey != parsedResponse.ApiKey);
+            Assert.True(TestWalletRegenerateKey.ApiKey != parsedResponse.ApiKey);
 
-            string checkUrl = ApiPaths.WALLETS_BASE_PATH + "/" + this.TestWalletRegenerateKey.Id;
+            string checkUrl = ApiPaths.WALLETS_BASE_PATH + "/" + TestWalletRegenerateKey.Id;
             var checkResponse = await this.Consumer.ExecuteRequest(checkUrl, Helpers.EmptyDictionary, null, Method.GET);
 
             Assert.True(checkResponse.Status == HttpStatusCode.OK);

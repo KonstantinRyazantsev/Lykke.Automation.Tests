@@ -6,6 +6,7 @@ using NUnit.Framework;
 using RestSharp;
 using XUnitTestCommon;
 using XUnitTestCommon.Utils;
+using BlueApiData;
 
 namespace AFTests.BlueApi
 {
@@ -29,7 +30,7 @@ namespace AFTests.BlueApi
             Assert.IsNotNull(parsedResponse);
 
             var originalCount = parsedResponse.Count;
-            await CreateLykkeBluePartnerClientAndApiConsumer();
+            await CreateTestPartnerClient();
 
             response = await Consumer.ExecuteRequest(url, Helpers.EmptyDictionary, null, Method.GET);
 
@@ -50,10 +51,10 @@ namespace AFTests.BlueApi
         [Category("GetUsersCountByTestPartner")]
         public async Task GetUsersCountByTestPartner()
         {
-            var url = "/api/Partners/getUsersCount";
+            var url = ApiPaths.CLIENT_ACCOUNT_PARTNERS + "/getUsersCount";
             var queryParams = new Dictionary<string, string>
             {
-                { "partnerId", "NewTestPartner" }
+                { "partnerId", Constants.CLIENT_PARTNER_ID }
             };
 
             var response = await ClientAccountConsumer.ExecuteRequest(url, queryParams, null, Method.GET);

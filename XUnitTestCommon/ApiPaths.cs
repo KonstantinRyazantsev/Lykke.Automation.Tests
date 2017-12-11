@@ -71,5 +71,6 @@ namespace XUnitTestCommon
         public static readonly string CLIENT_ACCOUNT_SERVICE_PREFIX = "client-account";
         public static readonly string CLIENT_ACCOUNT_SERVICE_BASEURL = "lykke-service.svc.cluster.local";
         public static readonly string CLIENT_ACCOUNT_PATH = "/api/ClientAccount";
+        public static readonly string CLIENT_ACCOUNT_PARTNERS = "/api/Partners";
     }    
 }

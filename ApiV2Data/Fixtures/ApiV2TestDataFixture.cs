@@ -34,13 +34,11 @@ namespace ApiV2Data.Fixtures
         public GenericRepository<WalletEntity, IWallet> WalletRepository;
         public List<WalletEntity> AllWalletsFromDb;
         public WalletDTO TestWallet;
-        public WalletDTO TestWalletDelete;
+        public WalletEntity TestTradingWallet;
+        public WalletDTO TestWalletOperations;
         public AccountEntity TestWalletAccount;
         public string TestAssetId;
         public int AssetPrecission;
-        public string TestWalletWithBalanceId;
-        public WalletDTO TestWalletOperations;
-        public WalletDTO TestWalletRegenerateKey;
 
         public GenericRepository<AccountEntity, IAccount> AccountRepository;
 
@@ -101,18 +99,17 @@ namespace ApiV2Data.Fixtures
             this.TestAssetId = Constants.TestAssetId;
             this.AssetPrecission = 2;
             this.AllWalletsFromDb = (await walletsFromDB).Cast<WalletEntity>().ToList();
+
+            this.TestTradingWallet =  AllWalletsFromDb.Where(w => w.Type == "Trading").FirstOrDefault();
             this.TestWallet = await CreateTestWallet();
 
-            //fill wallet with funds
+            //fill wallets with funds
             await MEConsumer.Client.UpdateBalanceAsync(Guid.NewGuid().ToString(), TestWallet.Id, Constants.TestAssetId, 50.0);
-            this.TestWalletWithBalanceId = TestWallet.Id;
+            await MEConsumer.Client.UpdateBalanceAsync(Guid.NewGuid().ToString(), TestTradingWallet.Id, Constants.TestAssetId, 50.0);
 
-
-            this.TestWalletDelete = await CreateTestWallet();
             this.TestWalletAccount = await AccountRepository.TryGetAsync(TestWallet.Id) as AccountEntity;
-            this.TestWalletOperations = await CreateTestWallet();
-            this.TestWalletRegenerateKey = await CreateTestWallet(true);
 
+            this.TestWalletOperations = await CreateTestWallet();
             this.TestOperation = await CreateTestOperation();
             this.TestOperationCancel = await CreateTestOperation();
 

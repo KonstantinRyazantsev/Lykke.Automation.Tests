@@ -132,41 +132,5 @@ namespace BlueApiData.Fixtures
         {
             
         }
-
-        public async Task CreateLykkeBluePartnerClientAndApiConsumer()
-        {
-            var consumer = new ApiConsumer(_configBuilder);
-
-            await consumer.RegisterNewUser(
-                new ClientRegisterDTO
-                {
-                    Email = Helpers.RandomString(8) + GlobalConstants.AutoTestEmail,
-                    FullName = Helpers.RandomString(5) + " " + Helpers.RandomString(8),
-                    ContactPhone = Helpers.Random.Next(1000000, 9999999).ToString(),
-                    Password = Helpers.RandomString(10),
-                    Hint = Helpers.RandomString(3),
-                    PartnerId = _configBuilder.Config["LykkeBluePartnerId"] // "Lykke.blue"
-                }
-            );
-
-            AddOneTimeCleanupAction(async () => await ClientAccounts.DeleteClientAccount(consumer.ClientInfo.Account.Id));
-        }
-
-        public async Task CreateTestPartnerClient()
-        {
-            await ClientAccountConsumer.RegisterNewUser(
-                new ClientRegisterDTO
-                {
-                    Email = Helpers.RandomString(8) + GlobalConstants.AutoTestEmail,
-                    FullName = Helpers.RandomString(5) + " " + Helpers.RandomString(8),
-                    ContactPhone = Helpers.Random.Next(1000000, 9999999).ToString(),
-                    Password = Helpers.RandomString(10),
-                    Hint = Helpers.RandomString(3),
-                    PartnerId = _configBuilder.Config["TestPartnerId"] //  "NewTestPartner"
-                }
-            );
-
-            AddOneTimeCleanupAction(async () => await ClientAccounts.DeleteClientAccount(ClientAccountConsumer.ClientInfo.Account.Id));
-        }
     }
 }

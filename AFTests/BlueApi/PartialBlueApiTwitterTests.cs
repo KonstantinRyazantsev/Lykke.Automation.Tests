@@ -6,6 +6,7 @@ using XUnitTestCommon;
 using XUnitTestCommon.Utils;
 using System.Threading.Tasks;
 using BlueApiData;
+using XUnitTestCommon.Reports;
 
 namespace AFTests.BlueApi
 {
@@ -75,6 +76,8 @@ namespace AFTests.BlueApi
 
             // checks if the right amout of tweets is returned on a single page
             Assert.True(tweets.Count <= pageSize);
+
+            Logger.WriteLine("may fail for older tweets due to chars limitations");
 
             tweets.ForEach(tweet =>
             {

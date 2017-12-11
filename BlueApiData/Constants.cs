@@ -11,5 +11,7 @@
         public static readonly string GIFT_COIN_ASSET_ID = "c33f03ea-bacd-4d26-a676-539ef5e8ec74"; //LKK
         public static readonly double GIFT_COIN_REQUEST_INITIAL_BALANCE = 50.0;
         public static readonly double GIFT_COIN_AWARD = 1.0;
+
+        public static readonly string CLIENT_PARTNER_ID = "Lykke.blue";
     }
 }
