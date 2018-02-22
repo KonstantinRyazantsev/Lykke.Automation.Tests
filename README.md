@@ -2,8 +2,10 @@
 To run tests against Blockchain integration:
 1. Clone this branch locally
 2. Now you have two options:
-A). Create properties.json into .\AFTests\bin\Debug\netcoreapp2.0\
+  A. Create properties.json into .\AFTests\bin\Debug\netcoreapp2.0\
 with the next simple content for your Blockchain
+
+```javascript
 {
   "BlockchainIntegration": "Zcash", //Name
   "AssetId": "ZEC", //AssetId of your Blockchain
@@ -12,7 +14,9 @@ with the next simple content for your Blockchain
   "WalletAddress": "some-wallet-address", //Wallet with some crypto in your blockchain testnet
   "WalletKey": "cRPW3spyP9riDJWniNpcbDkiBjpLrhneSh2qTs3uSZUbm4HZLEyB" //Key of your Wallet with some crypto
 }
-B). Create Class with settings for your Blockchain in BlockchainsIntegrationBaseTest and create system var: BlockchainIntegration = Name(blockchain name)
+```
+
+  B. Create Class with settings for your Blockchain in ```BlockchainsIntegrationBaseTest``` and create system var: ```BlockchainIntegration = Name``` (blockchain name)
 3. Run tests with filter "BlockchainIntegration"
 4. After all tests done open AFTests\bin\Debug\netcoreapp2.0\ and execute: 
 ..\..\..\..\XUnitTestCommon\Reports\allure-cli\bin\allure generate
